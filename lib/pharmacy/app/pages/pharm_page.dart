@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pharmacy_dro/pharmacy/app/bloc/pharm_bloc.dart';
+import 'package:pharmacy_dro/pharmacy/data/repository/pharmacy_repo.dart';
+import 'package:pharmacy_dro/pharmacy/data/sources/local_source.dart';
+import 'package:pharmacy_dro/pharmacy/data/sources/remote_source.dart';
 
 class PharmacyPage extends StatefulWidget {
   const PharmacyPage({Key? key}) : super(key: key);
@@ -8,6 +13,19 @@ class PharmacyPage extends StatefulWidget {
 }
 
 class _PharmacyPageState extends State<PharmacyPage> {
+  PharmBloc pharmBloc = PharmBloc(
+    DrugRepository(
+      DrugRemoteDataSource(),
+      DrugLocalDataSource(),
+    ),
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    pharmBloc.add(GetDrugsEvent());
+  }
+
   int selectedIndex = 2;
   @override
   Widget build(BuildContext context) {
@@ -59,64 +77,74 @@ class _PharmacyPageState extends State<PharmacyPage> {
           ),
         ),
       ),
-      body: Container(
-        color: Colors.grey.shade200,
-        child: ListView(
-          children: [
-            //Location stuff
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Row(
-                children: [
-                  Icon(Icons.gps_fixed_outlined),
-                  SizedBox(width: 5.0),
-                  Text('Delivery in'),
-                  SizedBox(width: 5.0),
-                  Text(
-                    'Lagos, NG',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  )
-                ],
-              ),
-            ),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              margin: EdgeInsets.symmetric(horizontal: 10.0),
-              padding: EdgeInsets.all(20.0),
-              color: Colors.white,
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: BlocProvider<PharmBloc>(
+        create: (context) => pharmBloc,
+        child: BlocListener<PharmBloc, PharmState>(
+          listener: (context, state) {
+            if (state is GotDrugsState) {
+              print(state.drugs);
+            }
+          },
+          child: Container(
+            color: Colors.grey.shade200,
+            child: ListView(
+              children: [
+                //Location stuff
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Row(
                     children: [
-                      Text('CATEGORIES'),
-                      TextButton(onPressed: () {}, child: Text('VIEW ALL'))
+                      Icon(Icons.gps_fixed_outlined),
+                      SizedBox(width: 5.0),
+                      Text('Delivery in'),
+                      SizedBox(width: 5.0),
+                      Text(
+                        'Lagos, NG',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      )
                     ],
                   ),
-                  //ListView for Categories
-                  Container(
-                    height: 100.0,
-                    width: MediaQuery.of(context).size.width,
-                    child: ListView(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      children: [
-                        Center(
-                          child: Container(
-                            height: 100.0,
-                            width: 150.0,
-                            decoration: BoxDecoration(
-                                color: Colors.yellow,
-                                borderRadius: BorderRadius.circular(10.0)),
-                          ),
-                        )
-                      ],
-                    ),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  margin: EdgeInsets.symmetric(horizontal: 10.0),
+                  padding: EdgeInsets.all(20.0),
+                  color: Colors.white,
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('CATEGORIES'),
+                          TextButton(onPressed: () {}, child: Text('VIEW ALL'))
+                        ],
+                      ),
+                      //ListView for Categories
+                      Container(
+                        height: 100.0,
+                        width: MediaQuery.of(context).size.width,
+                        child: ListView(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          children: [
+                            Center(
+                              child: Container(
+                                height: 100.0,
+                                width: 150.0,
+                                decoration: BoxDecoration(
+                                    color: Colors.yellow,
+                                    borderRadius: BorderRadius.circular(10.0)),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
