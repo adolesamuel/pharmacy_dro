@@ -85,12 +85,18 @@ class _PharmacyPageState extends State<PharmacyPage> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text('CATEGORIES'),
+                              Text(
+                                'CATEGORIES',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.grey),
+                              ),
                               TextButton(
                                   onPressed: () {}, child: Text('VIEW ALL'))
                             ],
                           ),
                           //ListView for Categories
+
                           Container(
                             height: 100.0,
                             width: MediaQuery.of(context).size.width,
@@ -108,17 +114,36 @@ class _PharmacyPageState extends State<PharmacyPage> {
                               },
                             ),
                           ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: Row(
+                              children: [
+                                Text(
+                                  'SUGGESTIONS',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.grey),
+                                )
+                              ],
+                            ),
+                          ),
                           if (state is GotDrugsState)
                             GridView.builder(
+                                padding: EdgeInsets.symmetric(vertical: 10.0),
                                 shrinkWrap: true,
                                 primary: false,
                                 itemCount: state.drugs.length,
                                 gridDelegate:
                                     SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2,
+                                  mainAxisSpacing: 10.0,
+                                  crossAxisSpacing: 10.0,
                                 ),
                                 itemBuilder: (context, index) {
-                                  return DrugListItem(drug: state.drugs[index]);
+                                  return DrugListItem(
+                                    drug: state.drugs[index],
+                                    onPressed: () {},
+                                  );
                                 }),
                         ],
                       ),
