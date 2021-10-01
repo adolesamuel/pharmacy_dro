@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pharmacy_dro/core/list.dart';
 import 'package:pharmacy_dro/pharmacy/app/bloc/pharm_bloc.dart';
 import 'package:pharmacy_dro/pharmacy/app/common/appbar_with_search.dart';
+import 'package:pharmacy_dro/pharmacy/app/common/category_widget.dart';
 import 'package:pharmacy_dro/pharmacy/data/repository/pharmacy_repo.dart';
 import 'package:pharmacy_dro/pharmacy/data/sources/local_source.dart';
 import 'package:pharmacy_dro/pharmacy/data/sources/remote_source.dart';
@@ -90,21 +92,17 @@ class _PharmacyPageState extends State<PharmacyPage> {
                           Container(
                             height: 100.0,
                             width: MediaQuery.of(context).size.width,
-                            child: ListView(
+                            child: ListView.builder(
                               shrinkWrap: true,
+                              itemCount: AppList.assetLists.length,
                               scrollDirection: Axis.horizontal,
-                              children: [
-                                Center(
-                                  child: Container(
-                                    height: 100.0,
-                                    width: 150.0,
-                                    decoration: BoxDecoration(
-                                        color: Colors.yellow,
-                                        borderRadius:
-                                            BorderRadius.circular(10.0)),
-                                  ),
-                                )
-                              ],
+                              itemBuilder: (context, index) {
+                                return CategoryWidget(
+                                  assetString: AppList.assetLists[index],
+                                  categoriesString:
+                                      AppList.categoriesList[index],
+                                );
+                              },
                             ),
                           ),
                           if (state is GotDrugsState)
