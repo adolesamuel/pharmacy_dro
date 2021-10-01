@@ -78,7 +78,7 @@ class DrugRemoteDataSource {
     Drug syrup = Drug(
       drugId: '5',
       drugName: 'Amoxil',
-      drugForm: 'Oral Suspension',
+      drugForm: 'Syrup',
       massPerTab: '125mg/5ml',
       imageUrl: 'assets/amoxil.jpg',
       requiresPrescription: true,

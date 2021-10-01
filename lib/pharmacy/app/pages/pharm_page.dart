@@ -4,6 +4,7 @@ import 'package:pharmacy_dro/core/list.dart';
 import 'package:pharmacy_dro/pharmacy/app/bloc/pharm_bloc.dart';
 import 'package:pharmacy_dro/pharmacy/app/common/appbar_with_search.dart';
 import 'package:pharmacy_dro/pharmacy/app/common/category_widget.dart';
+import 'package:pharmacy_dro/pharmacy/app/common/drug_list_item.dart';
 import 'package:pharmacy_dro/pharmacy/data/repository/pharmacy_repo.dart';
 import 'package:pharmacy_dro/pharmacy/data/sources/local_source.dart';
 import 'package:pharmacy_dro/pharmacy/data/sources/remote_source.dart';
@@ -56,6 +57,7 @@ class _PharmacyPageState extends State<PharmacyPage> {
               return Container(
                 color: Colors.grey.shade200,
                 child: ListView(
+                  shrinkWrap: true,
                   children: [
                     //Location stuff
                     Padding(
@@ -101,16 +103,22 @@ class _PharmacyPageState extends State<PharmacyPage> {
                                   assetString: AppList.assetLists[index],
                                   categoriesString:
                                       AppList.categoriesList[index],
+                                  selectCategory: (category) {},
                                 );
                               },
                             ),
                           ),
                           if (state is GotDrugsState)
-                            ListView.builder(
+                            GridView.builder(
                                 shrinkWrap: true,
+                                primary: false,
                                 itemCount: state.drugs.length,
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                ),
                                 itemBuilder: (context, index) {
-                                  return Text('a');
+                                  return DrugListItem(drug: state.drugs[index]);
                                 }),
                         ],
                       ),
