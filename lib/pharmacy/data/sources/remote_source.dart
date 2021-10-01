@@ -116,6 +116,12 @@ class DrugRemoteDataSource {
       vitamin,
       syrup,
       emzor,
+      lbuProfenRed,
+      panadolExtra,
+      doliprane,
+      vitamin,
+      syrup,
+      emzor,
     ];
 
     return Future.delayed(Duration(seconds: 1), () {

@@ -66,10 +66,23 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family:Proxima-Nova
+    - family: Proxima-Nova
       fonts:
         - asset: fonts/ProximaNova-Regular.otf
+          weight: 400
         - asset: fonts/Proxima-Nova-Thin.otf
+          weight: 200
+        - asset: fonts/Proxima-Nova-Semibold.otf
+          weight: 600
+        - asset: fonts/Proxima-Nova-Extrabold.otf
+          weight: 800
+        - asset: fonts/Proxima-Nova-Bold.otf
+          weight: 700
+        - asset: fonts/Proxima-Nova-Black.otf
+          style: italic
+        - asset: fonts/Proxima-Nova-Alt-Thin.otf
+        - asset: fonts/Proxima-Nova-Alt-Light.otf
+        - asset: fonts/Proxima-Nova-Alt-Bold.otf
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf

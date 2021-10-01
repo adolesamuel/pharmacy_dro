@@ -17,7 +17,29 @@ class _SingleDrugPageState extends State<SingleDrugPage> {
       appBar: SearchAppBar(
         hasSearchBar: false,
       ),
-      body: Container(),
+      body: Container(
+        child: Column(
+          children: [
+            Image(
+              image: AssetImage(widget.drug.imageUrl),
+            ),
+            Text(widget.drug.drugName),
+            Text(widget.drug.drugForm + ' - ' + widget.drug.massPerTab),
+            Row(children: [
+              CircleAvatar(
+                radius: 30.0,
+                backgroundColor: Colors.white,
+                child:
+                    Image(image: AssetImage(widget.drug.manufacturerImageUrl)),
+              ),
+              Column(
+                children: [Text('SOLD BY'), Text(widget.drug.manufacturerName)],
+              ),
+              IconButton(onPressed: () {}, icon: Icon(Icons.favorite_outline)),
+            ])
+          ],
+        ),
+      ),
       //,
     );
   }
