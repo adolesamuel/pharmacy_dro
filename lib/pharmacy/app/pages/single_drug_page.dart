@@ -6,6 +6,7 @@ import 'package:pharmacy_dro/core/appColors.dart';
 import 'package:pharmacy_dro/pharmacy/app/common/appbar_with_search.dart';
 import 'package:pharmacy_dro/pharmacy/app/common/elevated_long_button.dart';
 import 'package:pharmacy_dro/pharmacy/app/common/product_detail_card.dart';
+import 'package:pharmacy_dro/pharmacy/app/common/similar_product_slider.dart';
 import 'package:pharmacy_dro/pharmacy/data/models/drug_model.dart';
 
 class SingleDrugPage extends StatefulWidget {
@@ -77,6 +78,7 @@ class _SingleDrugPageState extends State<SingleDrugPage> {
               ],
             ),
             ProductDetailCard(drug: widget.drug),
+            SimilarProductSlider(),
             ElevatedLongBarButton(
               text: 'Add to Cart',
               onPressed: () {},
