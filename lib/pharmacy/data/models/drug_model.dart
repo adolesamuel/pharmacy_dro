@@ -20,7 +20,7 @@ class Drug {
   final bool requiresPrescription;
 
   ///retail price in Naira
-  final int retailPricePerPack;
+  final double retailPricePerPack;
 
   ///category of drug i.e for Headaches or Supplements
   final String drugCategory;
