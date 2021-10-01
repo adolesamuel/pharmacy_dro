@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pharmacy_dro/core/appColors.dart';
 
 class SearchAppBar extends StatefulWidget implements PreferredSizeWidget {
   final Function(String)? onChanged;
@@ -32,7 +33,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
       flexibleSpace: Container(
         height: widget.hasSearchBar ? null : 100,
         decoration: BoxDecoration(
-          color: Colors.deepPurple,
+          gradient: AppColors.DROPurpleGradient,
           borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(20.0),
               bottomRight: Radius.circular(20.0)),
@@ -46,6 +47,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
                 clipBehavior: Clip.antiAlias,
                 decoration: BoxDecoration(
                   color: Colors.deepPurple,
+                  gradient: AppColors.DROPurpleGradient,
                   borderRadius: BorderRadius.all(Radius.circular(10)),
                 ),
                 child: TextField(
