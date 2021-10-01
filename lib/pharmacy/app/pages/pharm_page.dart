@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pharmacy_dro/core/appColors.dart';
 import 'package:pharmacy_dro/core/list.dart';
 import 'package:pharmacy_dro/pharmacy/app/bloc/pharm_bloc.dart';
 import 'package:pharmacy_dro/pharmacy/app/common/appbar_with_search.dart';
@@ -174,17 +175,58 @@ class _PharmacyPageState extends State<PharmacyPage> {
           setState(() {});
         },
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
-        label: Row(
-          children: [
-            Text('Checkout'),
-            Icon(Icons.shopping_cart_outlined),
-            CircleAvatar(
-                radius: 10, backgroundColor: Colors.yellow, child: Text('2'))
-          ],
+      floatingActionButton: PhysicalModel(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(20.0),
+        elevation: 8.0,
+        child: Container(
+          padding: EdgeInsets.all(4.0),
+          decoration: BoxDecoration(
+              gradient: AppColors.DRORedGradient,
+              border: Border.all(color: Colors.white, width: 2.0),
+              borderRadius: BorderRadius.circular(20.0)),
+          width: 150.0,
+          height: 40.0,
+          child: RawMaterialButton(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)),
+            onPressed: () {},
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Checkout',
+                  style: TextStyle(color: Colors.white),
+                ),
+                Icon(
+                  Icons.shopping_cart_outlined,
+                  color: Colors.white,
+                ),
+                CircleAvatar(
+                  radius: 10,
+                  backgroundColor: Colors.yellow,
+                  child: Text('2'),
+                )
+              ],
+            ),
+          ),
         ),
       ),
+
+      // FloatingActionButton.extended(
+      //   onPressed: () {},
+      //   label: Container(
+      //     decoration: BoxDecoration(gradient: AppColors.DRORedGradient),
+      //     child: Row(
+      //       children: [
+      //         Text('Checkout'),
+      //         Icon(Icons.shopping_cart_outlined),
+      //         CircleAvatar(
+      //             radius: 10, backgroundColor: Colors.yellow, child: Text('2'))
+      //       ],
+      //     ),
+      //   ),
+      // ),
     );
   }
 }
