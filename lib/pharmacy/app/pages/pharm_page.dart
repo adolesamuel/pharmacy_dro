@@ -212,21 +212,6 @@ class _PharmacyPageState extends State<PharmacyPage> {
           ),
         ),
       ),
-
-      // FloatingActionButton.extended(
-      //   onPressed: () {},
-      //   label: Container(
-      //     decoration: BoxDecoration(gradient: AppColors.DRORedGradient),
-      //     child: Row(
-      //       children: [
-      //         Text('Checkout'),
-      //         Icon(Icons.shopping_cart_outlined),
-      //         CircleAvatar(
-      //             radius: 10, backgroundColor: Colors.yellow, child: Text('2'))
-      //       ],
-      //     ),
-      //   ),
-      // ),
     );
   }
 }
