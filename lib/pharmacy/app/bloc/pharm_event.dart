@@ -19,4 +19,4 @@ class RemoveDrugFromCartEvent extends PharmEvent {
 
 class RemoveAllDrugsFromCartEvent extends PharmEvent {}
 
-class GetDrugsFromCart extends PharmEvent {}
+class GetDrugsFromCartEvent extends PharmEvent {}

@@ -23,7 +23,7 @@ class _PharmacyPageState extends State<PharmacyPage> {
   @override
   void initState() {
     super.initState();
-    pharmBloc.add(GetDrugsEvent());
+    pharmBloc..add(GetDrugsEvent());
   }
 
   int selectedIndex = 2;
@@ -78,11 +78,16 @@ class _PharmacyPageState extends State<PharmacyPage> {
         ),
       ),
       body: BlocProvider<PharmBloc>(
-        create: (context) => pharmBloc,
+        create: (context) => pharmBloc..add(GetDrugsEvent()),
         child: BlocListener<PharmBloc, PharmState>(
+          bloc: pharmBloc,
           listener: (context, state) {
+            print(state);
             if (state is GotDrugsState) {
               print(state.drugs);
+            }
+            if (state is FailedState) {
+              print(state.failure.message);
             }
           },
           child: Container(
