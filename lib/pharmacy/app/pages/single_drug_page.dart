@@ -31,102 +31,65 @@ class _SingleDrugPageState extends State<SingleDrugPage> {
   Future showAddToCartBottomSheet(BuildContext context, Drug drug) {
     return showModalBottomSheet(
         context: context,
-        elevation: 0,
-        barrierColor: Colors.white.withOpacity(0),
-        backgroundColor: Colors.black.withOpacity(0.5),
-        isScrollControlled: true,
         shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
         builder: (context) {
           return Container(
-            height: MediaQuery.of(context).size.height,
-            alignment: Alignment.center,
-            padding: EdgeInsets.symmetric(vertical: 25.0, horizontal: 15.0),
-            child: Column(
+            padding: EdgeInsets.all(20.0),
+            height: 300,
+            width: 300,
+            child: Flex(
+              direction: Axis.vertical,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox(
-                  height: 25.0,
+                Text(
+                  computeText(drug),
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
                 ),
-                Row(
+                Column(
                   children: [
-                    //Dismiss Button
-                    IconButton(
-                      splashRadius: 20.0,
-                      icon: Icon(Icons.close, color: Colors.white),
+                    ElevatedLongBarButton(
+                      text: 'VIEW CART',
+                      showShoppingCart: false,
                       onPressed: () {
-                        Navigator.pop(context);
+                        //navigate to cart
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => CartPage()));
                       },
                     ),
-                    Text(
-                      'Confirm',
-                      style: TextStyle(color: Colors.white),
+                    Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.all(8.0),
+                      child: OutlinedButton(
+                          style: ElevatedButton.styleFrom(
+                              primary: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0)),
+                              side: BorderSide(color: AppColors.dROPurple)),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text(
+                            'CONTINUE SHOPPING',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.dROPurple),
+                          )),
                     ),
                   ],
                 ),
-                SizedBox(height: 10.0),
-                Expanded(
-                    child: Center(
-                        child: Container(
-                  padding: EdgeInsets.all(20.0),
-                  height: 300,
-                  width: 300,
-                  child: Flex(
-                    direction: Axis.vertical,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        computeText(drug),
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.center,
-                        maxLines: 2,
-                      ),
-                      Column(
-                        children: [
-                          ElevatedLongBarButton(
-                            text: 'VIEW CART',
-                            showShoppingCart: false,
-                            onPressed: () {
-                              //navigate to cart
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => CartPage()));
-                            },
-                          ),
-                          Container(
-                            width: double.infinity,
-                            padding: EdgeInsets.all(8.0),
-                            child: OutlinedButton(
-                                style: ElevatedButton.styleFrom(
-                                    primary: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0)),
-                                    side:
-                                        BorderSide(color: AppColors.dROPurple)),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: Text(
-                                  'CONTINUE SHOPPING',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: AppColors.dROPurple),
-                                )),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20.0),
-                        topRight: Radius.circular(20.0),
-                      )),
-                ))),
               ],
             ),
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20.0),
+                  topRight: Radius.circular(20.0),
+                )),
           );
         });
   }
