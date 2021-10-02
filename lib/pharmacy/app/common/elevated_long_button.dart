@@ -19,12 +19,12 @@ class ElevatedLongBarButton extends StatelessWidget {
       child: PhysicalModel(
         elevation: 8,
         borderRadius: BorderRadius.circular(10.0),
-        shadowColor: AppColors.DROPurple,
-        color: AppColors.DROPurple,
+        shadowColor: AppColors.dROPurple,
+        color: AppColors.dROPurple,
         child: Container(
           height: 40.0,
           decoration: BoxDecoration(
-              gradient: AppColors.DROPurpleGradient,
+              gradient: AppColors.dROPurpleGradient,
               borderRadius: BorderRadius.circular(10.0)),
           child: RawMaterialButton(
             elevation: 8.0,

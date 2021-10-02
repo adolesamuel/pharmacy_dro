@@ -33,7 +33,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
       flexibleSpace: Container(
         height: widget.hasSearchBar ? null : 100,
         decoration: BoxDecoration(
-          gradient: AppColors.DROPurpleGradient,
+          gradient: AppColors.dROPurpleGradient,
           borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(20.0),
               bottomRight: Radius.circular(20.0)),
@@ -47,7 +47,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
                 clipBehavior: Clip.antiAlias,
                 decoration: BoxDecoration(
                   color: Colors.deepPurple,
-                  gradient: AppColors.DROPurpleGradient,
+                  gradient: AppColors.dROPurpleGradient,
                   borderRadius: BorderRadius.all(Radius.circular(10)),
                 ),
                 child: TextField(

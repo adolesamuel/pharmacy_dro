@@ -6,6 +6,7 @@ import 'package:pharmacy_dro/pharmacy/app/bloc/pharm_bloc.dart';
 import 'package:pharmacy_dro/pharmacy/app/common/appbar_with_search.dart';
 import 'package:pharmacy_dro/pharmacy/app/common/category_widget.dart';
 import 'package:pharmacy_dro/pharmacy/app/common/drug_list_item.dart';
+import 'package:pharmacy_dro/pharmacy/app/pages/cart_page.dart';
 import 'package:pharmacy_dro/pharmacy/app/pages/single_drug_page.dart';
 import 'package:pharmacy_dro/pharmacy/data/repository/pharmacy_repo.dart';
 import 'package:pharmacy_dro/pharmacy/data/sources/local_source.dart';
@@ -40,7 +41,10 @@ class _PharmacyPageState extends State<PharmacyPage> {
         //todo:
         onChanged: (value) {},
         hasSearchBar: true,
-        onTapCart: () {},
+        onTapCart: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => CartPage()));
+        },
       ),
       body: BlocProvider<PharmBloc>(
         create: (context) => pharmBloc..add(GetDrugsEvent()),
@@ -191,7 +195,7 @@ class _PharmacyPageState extends State<PharmacyPage> {
         child: Container(
           padding: EdgeInsets.all(4.0),
           decoration: BoxDecoration(
-              gradient: AppColors.DRORedGradient,
+              gradient: AppColors.dRORedGradient,
               border: Border.all(color: Colors.white, width: 2.0),
               borderRadius: BorderRadius.circular(20.0)),
           width: 150.0,
@@ -199,7 +203,10 @@ class _PharmacyPageState extends State<PharmacyPage> {
           child: RawMaterialButton(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0)),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => CartPage()));
+            },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

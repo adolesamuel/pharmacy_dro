@@ -103,7 +103,7 @@ class _SingleDrugPageState extends State<SingleDrugPage> {
                                         borderRadius:
                                             BorderRadius.circular(10.0)),
                                     side:
-                                        BorderSide(color: AppColors.DROPurple)),
+                                        BorderSide(color: AppColors.dROPurple)),
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                 },
@@ -111,7 +111,7 @@ class _SingleDrugPageState extends State<SingleDrugPage> {
                                   'CONTINUE SHOPPING',
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      color: AppColors.DROPurple),
+                                      color: AppColors.dROPurple),
                                 )),
                           ),
                         ],
