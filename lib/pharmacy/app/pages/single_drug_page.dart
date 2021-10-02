@@ -203,7 +203,7 @@ class _SingleDrugPageState extends State<SingleDrugPage> {
               text: 'Add to Cart',
               onPressed: () {
                 //add drug to cart.
-                // pharmBloc.add(AddDrugToCartEvent(widget.drug));
+                pharmBloc.add(AddDrugToCartEvent(widget.drug));
                 //Show confirmation sheet
                 showAddToCartBottomSheet(context, widget.drug);
               },

@@ -44,7 +44,8 @@ class DrugLocalDataSource {
           final drug = Drug.fromJson(string);
           drugs.add(drug);
         }
-        drugs.remove(presentDrug); //actual remove function
+        drugs.remove(drugs.firstWhere((drug) =>
+            drug.drugId == presentDrug.drugId)); //actual remove function
         for (final drug in drugs) {
           final drugString = drug.toJson();
           drugsAsStringList.add(drugString);

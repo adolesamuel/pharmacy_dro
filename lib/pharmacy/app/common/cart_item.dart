@@ -7,7 +7,9 @@ import 'package:pharmacy_dro/pharmacy/data/models/drug_model.dart';
 
 class CartItem extends StatelessWidget {
   final Drug drug;
-  const CartItem({Key? key, required this.drug}) : super(key: key);
+  final Function()? clickRemove;
+  const CartItem({Key? key, required this.drug, this.clickRemove})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +86,7 @@ class CartItem extends StatelessWidget {
                 ),
               ),
               TextButton.icon(
-                  onPressed: () {},
+                  onPressed: clickRemove,
                   icon: Icon(Icons.delete),
                   label: Text('Remove'))
             ],
