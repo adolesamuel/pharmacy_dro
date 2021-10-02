@@ -3,17 +3,27 @@ import 'package:pharmacy_dro/core/appColors.dart';
 
 class SearchAppBar extends StatefulWidget implements PreferredSizeWidget {
   final Function(String)? onChanged;
+  final Widget title;
   final Function()? onTapCart;
   final bool hasSearchBar;
-  const SearchAppBar(
-      {Key? key, this.onChanged, this.onTapCart, this.hasSearchBar = true})
-      : super(key: key);
+  final bool hasFavourite;
+  final bool hasCart;
+  const SearchAppBar({
+    Key? key,
+    this.onChanged,
+    this.onTapCart,
+    this.hasSearchBar = true,
+    this.hasFavourite = true,
+    this.title = const Text('Pharmarcy'),
+    this.hasCart = true,
+  }) : super(key: key);
 
   @override
   _SearchAppBarState createState() => _SearchAppBarState();
 
   @override
-  Size get preferredSize => Size.fromHeight(130);
+  Size get preferredSize =>
+      Size.fromHeight(hasSearchBar ? 130 : kToolbarHeight);
 }
 
 class _SearchAppBarState extends State<SearchAppBar> {
@@ -23,12 +33,14 @@ class _SearchAppBarState extends State<SearchAppBar> {
       backgroundColor: Colors.grey.shade200,
       toolbarHeight: widget.hasSearchBar ? 130 : kToolbarHeight,
       elevation: 0,
-      title: Text('Pharmacy'),
+      title: widget.title,
       actions: [
-        IconButton(onPressed: () {}, icon: Icon(Icons.favorite_outline)),
-        IconButton(
-            onPressed: widget.onTapCart,
-            icon: Icon(Icons.shopping_cart_outlined)),
+        if (widget.hasFavourite)
+          IconButton(onPressed: () {}, icon: Icon(Icons.favorite_outline)),
+        if (widget.hasCart)
+          IconButton(
+              onPressed: widget.onTapCart,
+              icon: Icon(Icons.shopping_cart_outlined)),
       ],
       flexibleSpace: Container(
         height: widget.hasSearchBar ? null : 100,
@@ -71,8 +83,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
                 ),
               ),
             )
-          : PreferredSize(
-              preferredSize: Size.fromHeight(10), child: SizedBox.shrink()),
+          : null,
     );
   }
 }
