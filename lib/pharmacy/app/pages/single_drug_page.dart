@@ -1,13 +1,19 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pharmacy_dro/core/appColors.dart';
+import 'package:pharmacy_dro/pharmacy/app/bloc/pharm_bloc.dart';
 import 'package:pharmacy_dro/pharmacy/app/common/appbar_with_search.dart';
 import 'package:pharmacy_dro/pharmacy/app/common/elevated_long_button.dart';
 import 'package:pharmacy_dro/pharmacy/app/common/product_detail_card.dart';
 import 'package:pharmacy_dro/pharmacy/app/common/similar_product_slider.dart';
+import 'package:pharmacy_dro/pharmacy/app/pages/cart_page.dart';
 import 'package:pharmacy_dro/pharmacy/data/models/drug_model.dart';
+import 'package:pharmacy_dro/pharmacy/data/repository/pharmacy_repo.dart';
+import 'package:pharmacy_dro/pharmacy/data/sources/local_source.dart';
+import 'package:pharmacy_dro/pharmacy/data/sources/remote_source.dart';
 
 class SingleDrugPage extends StatefulWidget {
   final Drug drug;
@@ -18,6 +24,120 @@ class SingleDrugPage extends StatefulWidget {
 }
 
 class _SingleDrugPageState extends State<SingleDrugPage> {
+  String computeText(Drug drug) {
+    return '${drug.manufacturerName} ${drug.drugName} has been successfully added to cart!';
+  }
+
+  Future showAddToCartBottomSheet(BuildContext context, Drug drug) {
+    return showModalBottomSheet(
+        context: context,
+        elevation: 0,
+        barrierColor: Colors.white.withOpacity(0),
+        backgroundColor: Colors.black.withOpacity(0.5),
+        isScrollControlled: true,
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+        builder: (context) {
+          return Container(
+            height: MediaQuery.of(context).size.height,
+            alignment: Alignment.center,
+            padding: EdgeInsets.symmetric(vertical: 25.0, horizontal: 15.0),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 25.0,
+                ),
+                Row(
+                  children: [
+                    //Dismiss Button
+                    IconButton(
+                      splashRadius: 20.0,
+                      icon: Icon(Icons.close, color: Colors.white),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                    Text(
+                      'Confirm',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 10.0),
+                Expanded(
+                    child: Center(
+                        child: Container(
+                  padding: EdgeInsets.all(20.0),
+                  height: 300,
+                  width: 300,
+                  child: Flex(
+                    direction: Axis.vertical,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        computeText(drug),
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.center,
+                        maxLines: 2,
+                      ),
+                      Column(
+                        children: [
+                          ElevatedLongBarButton(
+                            text: 'VIEW CART',
+                            showShoppingCart: false,
+                            onPressed: () {
+                              //navigate to cart
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => CartPage()));
+                            },
+                          ),
+                          Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.all(8.0),
+                            child: OutlinedButton(
+                                style: ElevatedButton.styleFrom(
+                                    primary: Colors.white,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0)),
+                                    side:
+                                        BorderSide(color: AppColors.DROPurple)),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text(
+                                  'CONTINUE SHOPPING',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: AppColors.DROPurple),
+                                )),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20.0),
+                        topRight: Radius.circular(20.0),
+                      )),
+                ))),
+              ],
+            ),
+          );
+        });
+  }
+
+  PharmBloc pharmBloc = PharmBloc(
+    DrugRepository(
+      DrugRemoteDataSource(),
+      DrugLocalDataSource(),
+    ),
+  );
+
   @override
   Widget build(BuildContext context) {
     var format =
@@ -81,7 +201,12 @@ class _SingleDrugPageState extends State<SingleDrugPage> {
             SimilarProductSlider(),
             ElevatedLongBarButton(
               text: 'Add to Cart',
-              onPressed: () {},
+              onPressed: () {
+                //add drug to cart.
+                // pharmBloc.add(AddDrugToCartEvent(widget.drug));
+                //Show confirmation sheet
+                showAddToCartBottomSheet(context, widget.drug);
+              },
             ),
           ],
         ),
