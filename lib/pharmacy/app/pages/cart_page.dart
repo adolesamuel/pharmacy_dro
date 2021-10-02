@@ -64,7 +64,10 @@ class _CartPageState extends State<CartPage> {
               color: Colors.white,
             ),
             SizedBox(width: 8.0),
-            Text('Cart'),
+            Text(
+              'Cart',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
           ],
         ),
       ),

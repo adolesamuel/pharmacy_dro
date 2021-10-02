@@ -30,8 +30,13 @@ class _SimilarProductSliderState extends State<SimilarProductSlider> {
         builder: (context, state) {
           return Container(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Similar Products'),
+                Text(
+                  'Similar Products',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 4.0),
                 if (state is GotDrugsState)
                   Container(
                     height: 200.0,

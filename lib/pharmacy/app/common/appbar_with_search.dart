@@ -14,7 +14,10 @@ class SearchAppBar extends StatefulWidget implements PreferredSizeWidget {
     this.onTapCart,
     this.hasSearchBar = true,
     this.hasFavourite = true,
-    this.title = const Text('Pharmarcy'),
+    this.title = const Text(
+      'Pharmarcy',
+      style: TextStyle(fontWeight: FontWeight.bold),
+    ),
     this.hasCart = true,
   }) : super(key: key);
 
@@ -40,7 +43,10 @@ class _SearchAppBarState extends State<SearchAppBar> {
         if (widget.hasCart)
           IconButton(
               onPressed: widget.onTapCart,
-              icon: Icon(Icons.shopping_cart_outlined)),
+              icon: Icon(
+                Icons.shopping_cart_outlined,
+                color: Colors.white,
+              )),
       ],
       flexibleSpace: Container(
         height: widget.hasSearchBar ? null : 100,

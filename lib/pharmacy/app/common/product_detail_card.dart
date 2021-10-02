@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pharmacy_dro/core/appColors.dart';
 import 'package:pharmacy_dro/pharmacy/data/models/drug_model.dart';
 
 class ProductDetailCard extends StatelessWidget {
@@ -15,38 +17,58 @@ class ProductDetailCard extends StatelessWidget {
     return Container(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('PRODUCT DETAILS'),
-          Row(
-            children: [
-              DetailItem(
-                  icon: Icon(Icons.tablet),
-                  detail: 'PACK SIZE',
-                  detailContent: drug.packSize),
-              DetailItem(
-                  icon: Icon(Icons.tablet),
-                  detail: 'PRODUCT ID',
-                  detailContent: drug.productId),
-            ],
+          Text(
+            'PRODUCT DETAILS',
+            style: TextStyle(
+              color: AppColors.dROdarkBlue,
+              fontWeight: FontWeight.bold,
+              fontSize: 12,
+            ),
+          ),
+          SizedBox(
+            height: 4.0,
           ),
           Row(
             children: [
               DetailItem(
-                  icon: Icon(Icons.tablet),
-                  detail: 'CONSTITUENTS',
-                  detailContent: drug.constituents),
+                  iconAsset: 'assets/capsules.png',
+                  detail: 'PACK SIZE',
+                  detailContent: drug.packSize),
               DetailItem(
-                  icon: Icon(Icons.tablet),
-                  detail: 'DISPENSED IN',
-                  detailContent: drug.dispensedUnit),
+                  iconAsset: 'assets/menu.png',
+                  detail: 'PRODUCT ID',
+                  detailContent: drug.productId),
             ],
           ),
           SizedBox(
             height: 8.0,
           ),
+          Row(
+            children: [
+              DetailItem(
+                  iconAsset: 'assets/pill.png',
+                  detail: 'CONSTITUENTS',
+                  detailContent: drug.constituents),
+              DetailItem(
+                  iconAsset: 'assets/pills-bottle.png',
+                  detail: 'DISPENSED IN',
+                  detailContent: drug.dispensedUnit.toUpperCase() + 'S'),
+            ],
+          ),
+          SizedBox(
+            height: 16.0,
+          ),
           Container(
-            child: Text(computeDescription(drug)),
-          )
+            child: Text(
+              computeDescription(drug),
+              style: TextStyle(color: Colors.grey, fontSize: 12),
+            ),
+          ),
+          SizedBox(
+            height: 16.0,
+          ),
         ],
       ),
     );
@@ -54,24 +76,45 @@ class ProductDetailCard extends StatelessWidget {
 }
 
 class DetailItem extends StatelessWidget {
-  final Icon icon;
+  final String iconAsset;
   final String detail;
   final String detailContent;
   const DetailItem({
     Key? key,
-    required this.icon,
+    required this.iconAsset,
     required this.detail,
     required this.detailContent,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Container(
+      width: size.width * 0.4,
+      height: 30.0,
       child: Row(
         children: [
-          Icon(Icons.backpack),
+          Image.asset(
+            iconAsset,
+            height: 20,
+            color: AppColors.dROPurple,
+          ),
+          SizedBox(
+            width: 8.0,
+          ),
           Column(
-            children: [Text(detail), Text(detailContent)],
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                detail,
+                style: TextStyle(fontSize: 9, color: AppColors.dROMiddleBlue),
+              ),
+              Text(detailContent,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                      color: AppColors.dROdarkBlue))
+            ],
           )
         ],
       ),
