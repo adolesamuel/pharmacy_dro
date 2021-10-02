@@ -24,6 +24,7 @@ class SingleDrugPage extends StatefulWidget {
 }
 
 class _SingleDrugPageState extends State<SingleDrugPage> {
+  int productCount = 1;
   String computeText(Drug drug) {
     return '${drug.manufacturerName} ${drug.drugName} has been successfully added to cart!';
   }
@@ -152,6 +153,7 @@ class _SingleDrugPageState extends State<SingleDrugPage> {
                   ),
                   SizedBox(width: 8.0),
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         'SOLD BY',
@@ -159,7 +161,7 @@ class _SingleDrugPageState extends State<SingleDrugPage> {
                             color: AppColors.dROMiddleBlue, fontSize: 10),
                       ),
                       Text(
-                        widget.drug.manufacturerName,
+                        widget.drug.manufacturerName + ' Pharmaceuticals',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.blueGrey.shade700),
@@ -169,7 +171,10 @@ class _SingleDrugPageState extends State<SingleDrugPage> {
                 ],
               ),
               IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    //TODO:
+                    //Switch favourite to filled stuff and unfill
+                  },
                   icon: Icon(
                     Icons.favorite_outline,
                     color: AppColors.dROPurple,
@@ -195,12 +200,25 @@ class _SingleDrugPageState extends State<SingleDrugPage> {
                       ),
                       child: Row(
                         children: [
-                          InkWell(onTap: () {}, child: Icon(Icons.remove)),
+                          InkWell(
+                              onTap: () {
+                                if (productCount > 1) {
+                                  productCount -= 1;
+                                }
+                                setState(() {});
+                              },
+                              child: Icon(Icons.remove)),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Text('1'),
+                            child: Text('$productCount'),
                           ),
-                          InkWell(onTap: () {}, child: Icon(Icons.add)),
+                          InkWell(
+                              onTap: () {
+                                productCount += 1;
+
+                                setState(() {});
+                              },
+                              child: Icon(Icons.add)),
                         ],
                       ),
                     ),
@@ -228,7 +246,9 @@ class _SingleDrugPageState extends State<SingleDrugPage> {
               text: 'Add to Cart',
               onPressed: () {
                 //add drug to cart.
-                pharmBloc.add(AddDrugToCartEvent(widget.drug));
+                for (int i = 1; i <= productCount; i++) {
+                  pharmBloc.add(AddDrugToCartEvent(widget.drug));
+                }
                 //Show confirmation sheet
                 showAddToCartBottomSheet(context, widget.drug);
               },

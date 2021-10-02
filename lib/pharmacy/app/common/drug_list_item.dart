@@ -36,7 +36,8 @@ class DrugListItem extends StatelessWidget {
                 padding: EdgeInsets.all(4.0),
                 decoration:
                     BoxDecoration(borderRadius: BorderRadius.circular(10.0)),
-                child: Column(
+                child: Flex(
+                  direction: Axis.vertical,
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -45,17 +46,31 @@ class DrugListItem extends StatelessWidget {
                       children: [
                         Text(
                           drug.drugForm,
+                          style: TextStyle(color: Colors.grey, fontSize: 12),
+                        ),
+                        SizedBox(
+                          width: 4.0,
                         ),
                         Icon(
                           Icons.circle,
                           size: 4,
+                          color: Colors.grey,
                         ),
-                        Text(drug.massPerTab)
+                        SizedBox(
+                          width: 4.0,
+                        ),
+                        Text(
+                          drug.massPerTab,
+                          style: TextStyle(color: Colors.grey, fontSize: 12),
+                        )
                       ],
                     ),
-                    Text(format.currencySymbol +
-                        ' ' +
-                        drug.retailPricePerPack.toStringAsFixed(2)),
+                    Text(
+                      format.currencySymbol +
+                          drug.retailPricePerPack.toStringAsFixed(2),
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                    ),
                   ],
                 ),
               )
