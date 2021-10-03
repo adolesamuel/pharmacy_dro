@@ -37,7 +37,7 @@ class _SimilarProductSliderState extends State<SimilarProductSlider> {
                 SizedBox(height: 4.0),
                 if (state is GotDrugsState)
                   Container(
-                    height: 250.0,
+                    height: 220.0,
                     width: MediaQuery.of(context).size.width,
                     child: ListView.builder(
                       shrinkWrap: true,

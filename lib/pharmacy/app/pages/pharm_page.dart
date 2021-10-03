@@ -23,6 +23,7 @@ class PharmacyPage extends StatefulWidget {
 class _PharmacyPageState extends State<PharmacyPage> {
   List<Drug> drugs = [];
   int cartLength = 0;
+  List<Drug> tempDrugsStore = [];
 
   //The Bloc is called here
   PharmBloc pharmBloc = PharmBloc(
@@ -48,6 +49,7 @@ class _PharmacyPageState extends State<PharmacyPage> {
             pharmBloc.add(GetDrugsEvent());
           }
           if (drugs.isNotEmpty) {
+            drugs = tempDrugsStore;
             drugs = drugs
                 .where((drug) =>
                     drug.drugName.toLowerCase().contains(value.toLowerCase()))
@@ -74,6 +76,7 @@ class _PharmacyPageState extends State<PharmacyPage> {
               if (state is GotDrugsState) {
                 print(state.drugs);
                 drugs = state.drugs;
+                tempDrugsStore = state.drugs;
                 pharmBloc.add(GetDrugsFromCartEvent());
               } else if (state is FailedState) {
                 print(state.failure.message);
@@ -145,6 +148,7 @@ class _PharmacyPageState extends State<PharmacyPage> {
                                   categoriesString:
                                       AppList.categoriesList[index],
                                   selectCategory: (category) {
+                                    drugs = tempDrugsStore;
                                     drugs = drugs
                                         .where((drug) => drug.drugCategory
                                             .toLowerCase()
