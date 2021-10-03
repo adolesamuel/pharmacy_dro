@@ -22,6 +22,7 @@ class PharmacyPage extends StatefulWidget {
 
 class _PharmacyPageState extends State<PharmacyPage> {
   List<Drug> drugs = [];
+  int cartLength = 0;
 
   //The Bloc is called here
   PharmBloc pharmBloc = PharmBloc(
@@ -62,7 +63,8 @@ class _PharmacyPageState extends State<PharmacyPage> {
         hasCart: false,
         onTapCart: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => CartPage()));
+                  context, MaterialPageRoute(builder: (context) => CartPage()))
+              .then((value) => pharmBloc.add(GetDrugsEvent()));
         },
       ),
       body: BlocProvider<PharmBloc>(
@@ -74,9 +76,12 @@ class _PharmacyPageState extends State<PharmacyPage> {
               if (state is GotDrugsState) {
                 print(state.drugs);
                 drugs = state.drugs;
-              }
-              if (state is FailedState) {
+                pharmBloc.add(GetDrugsFromCartEvent());
+              } else if (state is FailedState) {
                 print(state.failure.message);
+              } else if (state is GotDrugsFromCartState) {
+                cartLength = state.cartDrugs.length;
+                setState(() {});
               }
             },
             builder: (context, state) {
@@ -185,11 +190,45 @@ class _PharmacyPageState extends State<PharmacyPage> {
                                       drug: drugs[index],
                                       onPressed: () {
                                         Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    SingleDrugPage(
-                                                        drug: drugs[index])));
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        SingleDrugPage(
+                                                            drug:
+                                                                drugs[index])))
+                                            .then((value) =>
+                                                pharmBloc.add(GetDrugsEvent()));
+                                      },
+                                    );
+                                  }),
+                            ),
+                          if (state is GotDrugsFromCartState)
+                            SingleChildScrollView(
+                              child: GridView.builder(
+                                  //padding: EdgeInsets.symmetric(vertical: 10.0),
+                                  shrinkWrap: true,
+                                  primary: false,
+                                  itemCount: drugs.length,
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    mainAxisSpacing: 10.0,
+                                    childAspectRatio: (itemWidth / itemHeight),
+                                    crossAxisSpacing: 10.0,
+                                  ),
+                                  itemBuilder: (context, index) {
+                                    return DrugListItem(
+                                      drug: drugs[index],
+                                      onPressed: () {
+                                        Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        SingleDrugPage(
+                                                            drug:
+                                                                drugs[index])))
+                                            .then((value) =>
+                                                pharmBloc.add(GetDrugsEvent()));
                                       },
                                     );
                                   }),
@@ -203,19 +242,42 @@ class _PharmacyPageState extends State<PharmacyPage> {
             }),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Colors.deepPurple,
+        selectedItemColor: AppColors.dROPurple,
         unselectedItemColor: Colors.grey,
         unselectedLabelStyle: TextStyle(color: Colors.grey),
         backgroundColor: Colors.grey.shade100,
         showSelectedLabels: true,
         showUnselectedLabels: true,
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.dock), label: 'Doctors'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_cart_outlined), label: 'Pharmacy'),
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Community'),
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Profile'),
+              icon: Image.asset('assets/house.png',
+                  height: 25, color: Colors.grey),
+              label: 'Home'),
+          BottomNavigationBarItem(
+              icon: Image.asset('assets/doctor.png',
+                  height: 25, color: Colors.grey),
+              label: 'Doctors'),
+          BottomNavigationBarItem(
+              icon: Image.asset(
+                'assets/shopping-cart.png',
+                height: 25,
+                color: AppColors.dROPurple,
+              ),
+              label: 'Pharmacy'),
+          BottomNavigationBarItem(
+              icon: Image.asset(
+                'assets/chat.png',
+                height: 25,
+                color: Colors.grey,
+              ),
+              label: 'Community'),
+          BottomNavigationBarItem(
+              icon: Image.asset(
+                'assets/user.png',
+                height: 25,
+                color: Colors.grey,
+              ),
+              label: 'Profile'),
         ],
         currentIndex: selectedIndex,
         onTap: (index) {
@@ -239,25 +301,33 @@ class _PharmacyPageState extends State<PharmacyPage> {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0)),
             onPressed: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => CartPage()));
+              Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => CartPage()))
+                  .then((value) => pharmBloc.add(GetDrugsEvent()));
             },
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Text(
                   'Checkout',
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
                 ),
-                Icon(
-                  Icons.shopping_cart_outlined,
+                Image.asset(
+                  'assets/shopping-cart-outline.png',
                   color: Colors.white,
+                  height: 18,
                 ),
-                CircleAvatar(
-                  radius: 10,
-                  backgroundColor: Colors.yellow,
-                  child: Text('2'),
-                )
+                if (cartLength > 0)
+                  CircleAvatar(
+                    radius: 10,
+                    backgroundColor: Colors.yellow,
+                    child: Text(
+                      '$cartLength',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                    ),
+                  )
               ],
             ),
           ),
