@@ -8,6 +8,7 @@ import 'package:pharmacy_dro/pharmacy/app/common/category_widget.dart';
 import 'package:pharmacy_dro/pharmacy/app/common/drug_list_item.dart';
 import 'package:pharmacy_dro/pharmacy/app/pages/cart_page.dart';
 import 'package:pharmacy_dro/pharmacy/app/pages/single_drug_page.dart';
+import 'package:pharmacy_dro/pharmacy/data/models/drug_model.dart';
 import 'package:pharmacy_dro/pharmacy/data/repository/pharmacy_repo.dart';
 import 'package:pharmacy_dro/pharmacy/data/sources/local_source.dart';
 import 'package:pharmacy_dro/pharmacy/data/sources/remote_source.dart';
@@ -20,6 +21,9 @@ class PharmacyPage extends StatefulWidget {
 }
 
 class _PharmacyPageState extends State<PharmacyPage> {
+  List<Drug> drugs = [];
+
+  //The Bloc is called here
   PharmBloc pharmBloc = PharmBloc(
     DrugRepository(
       DrugRemoteDataSource(),
@@ -36,11 +40,26 @@ class _PharmacyPageState extends State<PharmacyPage> {
   int selectedIndex = 2;
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    final double itemHeight = 2.3;
+    final double itemWidth = 2;
     return Scaffold(
       appBar: SearchAppBar(
-        //todo:
-        onChanged: (value) {},
+        onChanged: (value) {
+          if (value.trim().isEmpty) {
+            pharmBloc.add(GetDrugsEvent());
+          }
+          if (drugs.isNotEmpty) {
+            drugs = drugs
+                .where((drug) =>
+                    drug.drugName.toLowerCase().contains(value.toLowerCase()))
+                .toList();
+            setState(() {});
+          }
+        },
         hasSearchBar: true,
+        hasTruck: true,
+        hasCart: false,
         onTapCart: () {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => CartPage()));
@@ -54,6 +73,7 @@ class _PharmacyPageState extends State<PharmacyPage> {
               print(state);
               if (state is GotDrugsState) {
                 print(state.drugs);
+                drugs = state.drugs;
               }
               if (state is FailedState) {
                 print(state.failure.message);
@@ -70,7 +90,10 @@ class _PharmacyPageState extends State<PharmacyPage> {
                       padding: const EdgeInsets.all(20.0),
                       child: Row(
                         children: [
-                          Icon(Icons.gps_fixed_outlined),
+                          Image.asset(
+                            'assets/pin.png',
+                            height: 20,
+                          ),
                           SizedBox(width: 5.0),
                           Text('Delivery in'),
                           SizedBox(width: 5.0),
@@ -98,7 +121,10 @@ class _PharmacyPageState extends State<PharmacyPage> {
                                     color: Colors.grey),
                               ),
                               TextButton(
-                                  onPressed: () {}, child: Text('VIEW ALL'))
+                                  onPressed: () {
+                                    pharmBloc.add(GetDrugsEvent());
+                                  },
+                                  child: Text('VIEW ALL'))
                             ],
                           ),
                           //ListView for Categories
@@ -115,12 +141,19 @@ class _PharmacyPageState extends State<PharmacyPage> {
                                   assetString: AppList.assetLists[index],
                                   categoriesString:
                                       AppList.categoriesList[index],
-                                  selectCategory: (category) {},
+                                  selectCategory: (category) {
+                                    drugs = drugs
+                                        .where((drug) => drug.drugCategory
+                                            .toLowerCase()
+                                            .contains(category.toLowerCase()))
+                                        .toList();
+                                    setState(() {});
+                                  },
                                 );
                               },
                             ),
                           ),
-                          Padding(
+                          Container(
                             padding: const EdgeInsets.only(top: 8.0),
                             child: Row(
                               children: [
@@ -134,31 +167,33 @@ class _PharmacyPageState extends State<PharmacyPage> {
                             ),
                           ),
                           if (state is GotDrugsState)
-                            GridView.builder(
-                                padding: EdgeInsets.symmetric(vertical: 10.0),
-                                shrinkWrap: true,
-                                primary: false,
-                                itemCount: state.drugs.length,
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  mainAxisSpacing: 10.0,
-                                  crossAxisSpacing: 10.0,
-                                ),
-                                itemBuilder: (context, index) {
-                                  return DrugListItem(
-                                    drug: state.drugs[index],
-                                    onPressed: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  SingleDrugPage(
-                                                      drug:
-                                                          state.drugs[index])));
-                                    },
-                                  );
-                                }),
+                            SingleChildScrollView(
+                              child: GridView.builder(
+                                  //padding: EdgeInsets.symmetric(vertical: 10.0),
+                                  shrinkWrap: true,
+                                  primary: false,
+                                  itemCount: drugs.length,
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    mainAxisSpacing: 10.0,
+                                    childAspectRatio: (itemWidth / itemHeight),
+                                    crossAxisSpacing: 10.0,
+                                  ),
+                                  itemBuilder: (context, index) {
+                                    return DrugListItem(
+                                      drug: drugs[index],
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    SingleDrugPage(
+                                                        drug: drugs[index])));
+                                      },
+                                    );
+                                  }),
+                            ),
                         ],
                       ),
                     ),

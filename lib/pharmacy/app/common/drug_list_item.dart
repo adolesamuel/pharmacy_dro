@@ -16,26 +16,45 @@ class DrugListItem extends StatelessWidget {
         NumberFormat.simpleCurrency(locale: Platform.localeName, name: 'NGN');
     Size size = MediaQuery.of(context).size;
     return Card(
-      elevation: 8,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+      elevation: 2,
+      shadowColor: Colors.white,
       child: RawMaterialButton(
         onPressed: onPressed,
         child: Container(
+          width: size.width * 0.35,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                width: size.width * 0.3,
-                height: size.height * 0.15,
-                color: Colors.grey,
-                child: Image.asset(
-                  drug.imageUrl,
-                  fit: BoxFit.cover,
-                ),
+              Stack(
+                alignment: AlignmentDirectional.bottomCenter,
+                children: [
+                  Container(
+                    width: size.width * 0.3,
+                    height: size.height * 0.15,
+                    color: Colors.grey,
+                    child: Image.asset(
+                      drug.imageUrl,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  if (drug.requiresPrescription)
+                    Container(
+                      padding: EdgeInsets.all(2.0),
+                      width: double.infinity,
+                      color: Colors.black.withOpacity(0.5),
+                      child: Center(
+                        child: Text(
+                          'Requires a prescription',
+                          style: TextStyle(color: Colors.white, fontSize: 10),
+                        ),
+                      ),
+                    )
+                ],
               ),
               Container(
                 padding: EdgeInsets.all(4.0),
                 decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(10.0)),
+                    BoxDecoration(borderRadius: BorderRadius.circular(20.0)),
                 child: Flex(
                   direction: Axis.vertical,
                   mainAxisAlignment: MainAxisAlignment.start,
