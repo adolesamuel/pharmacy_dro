@@ -61,6 +61,7 @@ class _PharmacyPageState extends State<PharmacyPage> {
         hasSearchBar: true,
         hasTruck: true,
         hasCart: false,
+        cartHasItem: cartLength > 0 ? true : false,
         onTapCart: () {
           Navigator.push(
                   context, MaterialPageRoute(builder: (context) => CartPage()))

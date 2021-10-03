@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pharmacy_dro/core/appColors.dart';
+import 'package:pharmacy_dro/pharmacy/app/bloc/pharm_bloc.dart';
+import 'package:pharmacy_dro/pharmacy/data/repository/pharmacy_repo.dart';
+import 'package:pharmacy_dro/pharmacy/data/sources/local_source.dart';
+import 'package:pharmacy_dro/pharmacy/data/sources/remote_source.dart';
 
 class SearchAppBar extends StatefulWidget implements PreferredSizeWidget {
   final Function(String)? onChanged;
@@ -10,6 +15,7 @@ class SearchAppBar extends StatefulWidget implements PreferredSizeWidget {
   final bool hasFavourite;
   final bool hasCart;
   final bool hasTruck;
+  final bool cartHasItem;
   const SearchAppBar({
     Key? key,
     this.onChanged,
@@ -17,6 +23,7 @@ class SearchAppBar extends StatefulWidget implements PreferredSizeWidget {
     this.hasSearchBar = true,
     this.hasFavourite = true,
     this.hasTruck = false,
+    this.cartHasItem = true,
     this.title = const Text(
       'Pharmarcy',
       style: TextStyle(fontWeight: FontWeight.bold),
@@ -33,6 +40,13 @@ class SearchAppBar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _SearchAppBarState extends State<SearchAppBar> {
+  PharmBloc pharmBloc = PharmBloc(
+    DrugRepository(
+      DrugRemoteDataSource(),
+      DrugLocalDataSource(),
+    ),
+  );
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -42,24 +56,59 @@ class _SearchAppBarState extends State<SearchAppBar> {
       title: widget.title,
       actions: [
         if (widget.hasFavourite)
-          IconButton(onPressed: () {}, icon: Icon(Icons.favorite_outline)),
+          IconButton(
+              onPressed: () {},
+              icon: Stack(
+                alignment: AlignmentDirectional.topEnd,
+                children: [
+                  Icon(Icons.favorite_outline),
+                  if (widget.cartHasItem)
+                    CircleAvatar(
+                      radius: 4,
+                      backgroundColor: Colors.amberAccent,
+                    ),
+                ],
+              )),
         if (widget.hasCart)
           IconButton(
               onPressed: widget.onTapCart,
-              icon: Icon(
-                Icons.shopping_cart_outlined,
-                color: Colors.white,
+              icon: Stack(
+                alignment: AlignmentDirectional.topEnd,
+                children: [
+                  Icon(
+                    Icons.shopping_cart_outlined,
+                    color: Colors.white,
+                  ),
+                  if (widget.cartHasItem)
+                    CircleAvatar(
+                      radius: 4,
+                      backgroundColor: Colors.amberAccent,
+                    ),
+                ],
               )),
         if (widget.hasTruck)
           InkWell(
             onTap: widget.onTapCart,
             borderRadius: BorderRadius.circular(20.0),
             child: Padding(
-              padding: const EdgeInsets.only(left: 8.0, right: 20),
-              child: Image.asset(
-                'assets/delivery.png',
-                width: 30.0,
-                color: Colors.white,
+              padding: const EdgeInsets.only(left: 8.0, right: 20, top: 8.0),
+              child: Stack(
+                alignment: AlignmentDirectional.topEnd,
+                children: [
+                  Image.asset(
+                    'assets/delivery.png',
+                    width: 30.0,
+                    color: Colors.white,
+                  ),
+                  if (widget.cartHasItem)
+                    Positioned(
+                      top: 3,
+                      child: CircleAvatar(
+                        radius: 4,
+                        backgroundColor: Colors.amberAccent,
+                      ),
+                    ),
+                ],
               ),
             ),
           )
