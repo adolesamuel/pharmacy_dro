@@ -11,7 +11,12 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+  ///This widget is the root of your application.
+  ///This app is using an abridged version of Reso Coder's clean architecture
+  ///The cart is a Hive box
+  ///Should have used Getit for dependency injection of the blocs but this way has less boilerplate code.
+  /// Data is gotten from a assets used as mock remote data source
+  /// Drug Images exists as assets in the assets folder
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
