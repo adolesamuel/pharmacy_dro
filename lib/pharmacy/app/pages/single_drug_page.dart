@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:pharmacy_dro/core/appColors.dart';
 import 'package:pharmacy_dro/pharmacy/app/bloc/pharm_bloc.dart';
@@ -102,6 +103,8 @@ class _SingleDrugPageState extends State<SingleDrugPage> {
     ),
   );
 
+  int cartLength = 0;
+
   @override
   Widget build(BuildContext context) {
     var format =
@@ -110,150 +113,177 @@ class _SingleDrugPageState extends State<SingleDrugPage> {
       appBar: SearchAppBar(
         hasSearchBar: false,
         hasFavourite: false,
+        cartHasItem: cartLength > 0 ? true : false,
         onTapCart: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => CartPage()));
+                  context, MaterialPageRoute(builder: (context) => CartPage()))
+              .then((value) => pharmBloc.add(GetDrugsFromCartEvent()));
         },
       ),
-      body: Container(
-        padding: EdgeInsets.all(20.0),
-        child: ListView(
-          children: [
-            Image(
-              image: AssetImage(widget.drug.imageUrl),
-              height: 150.0,
-            ),
-            SizedBox(
-              height: 4.0,
-            ),
-            Center(
-              child: Text(
-                widget.drug.drugName,
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
-            Center(
-              child: Text(
-                widget.drug.drugForm + ' - ' + widget.drug.massPerTab,
-                style: TextStyle(color: Colors.grey),
-              ),
-            ),
-            SizedBox(
-              height: 4.0,
-            ),
-            //Manufacturer Name bar
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              Row(
-                children: [
-                  CircleAvatar(
-                    radius: 20.0,
-                    backgroundColor: Colors.white,
-                    child: Image(
-                        image: AssetImage(widget.drug.manufacturerImageUrl)),
-                  ),
-                  SizedBox(width: 8.0),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'SOLD BY',
-                        style: TextStyle(
-                            color: AppColors.dROMiddleBlue, fontSize: 10),
-                      ),
-                      Text(
-                        widget.drug.manufacturerName + ' Pharmaceuticals',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blueGrey.shade700),
-                      )
-                    ],
-                  ),
-                ],
-              ),
-              IconButton(
-                  onPressed: () {
-                    //TODO:
-                    //Switch favourite to filled stuff and unfill
-                  },
-                  icon: Icon(
-                    Icons.favorite_outline,
-                    color: AppColors.dROPurple,
-                  )),
-            ]),
-
-            SizedBox(
-              height: 20,
-            ),
-
-            //Change Count bar
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
+      body: BlocProvider(
+        create: (context) => pharmBloc..add(GetDrugsFromCartEvent()),
+        child: BlocListener<PharmBloc, PharmState>(
+          listener: (context, state) {
+            if (state is GotDrugsFromCartState) {
+              cartLength = state.cartDrugs.length;
+              setState(() {});
+            }
+          },
+          child: Stack(
+            alignment: AlignmentDirectional.bottomCenter,
+            children: [
+              Container(
+                padding: EdgeInsets.all(20.0),
+                child: ListView(
                   children: [
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 8.0),
-                      height: 37.0,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey, width: 1.0),
-                        borderRadius: BorderRadius.circular(10.0),
+                    Image(
+                      image: AssetImage(widget.drug.imageUrl),
+                      height: 150.0,
+                    ),
+                    SizedBox(
+                      height: 4.0,
+                    ),
+                    Center(
+                      child: Text(
+                        widget.drug.drugName,
+                        style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      child: Row(
-                        children: [
-                          InkWell(
-                              onTap: () {
-                                if (productCount > 1) {
-                                  productCount -= 1;
-                                }
-                                setState(() {});
-                              },
-                              child: Icon(Icons.remove)),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text('$productCount'),
-                          ),
-                          InkWell(
-                              onTap: () {
-                                productCount += 1;
-
-                                setState(() {});
-                              },
-                              child: Icon(Icons.add)),
-                        ],
+                    ),
+                    Center(
+                      child: Text(
+                        widget.drug.drugForm + ' - ' + widget.drug.massPerTab,
+                        style: TextStyle(color: Colors.grey),
                       ),
                     ),
                     SizedBox(
-                      width: 8.0,
+                      height: 4.0,
                     ),
-                    Text(
-                      widget.drug.dispensedUnit + ('(s)'),
-                      style: TextStyle(color: Colors.grey),
+                    //Manufacturer Name bar
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              CircleAvatar(
+                                radius: 20.0,
+                                backgroundColor: Colors.white,
+                                child: Image(
+                                    image: AssetImage(
+                                        widget.drug.manufacturerImageUrl)),
+                              ),
+                              SizedBox(width: 8.0),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'SOLD BY',
+                                    style: TextStyle(
+                                        color: AppColors.dROMiddleBlue,
+                                        fontSize: 10),
+                                  ),
+                                  Text(
+                                    widget.drug.manufacturerName +
+                                        ' Pharmaceuticals',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.blueGrey.shade700),
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                          IconButton(
+                              onPressed: () {
+                                //TODO:
+                                //Switch favourite to filled stuff and unfill
+                              },
+                              icon: Icon(
+                                Icons.favorite_outline,
+                                color: AppColors.dROPurple,
+                              )),
+                        ]),
+
+                    SizedBox(
+                      height: 20,
                     ),
+
+                    //Change Count bar
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 8.0),
+                              height: 37.0,
+                              decoration: BoxDecoration(
+                                border:
+                                    Border.all(color: Colors.grey, width: 1.0),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              child: Row(
+                                children: [
+                                  InkWell(
+                                      onTap: () {
+                                        if (productCount > 1) {
+                                          productCount -= 1;
+                                        }
+                                        setState(() {});
+                                      },
+                                      child: Icon(Icons.remove)),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text('$productCount'),
+                                  ),
+                                  InkWell(
+                                      onTap: () {
+                                        productCount += 1;
+
+                                        setState(() {});
+                                      },
+                                      child: Icon(Icons.add)),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              width: 8.0,
+                            ),
+                            Text(
+                              widget.drug.dispensedUnit + ('(s)'),
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          format.currencySymbol +
+                              widget.drug.retailPricePerPack.toStringAsFixed(2),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 25),
+                        ),
+                      ],
+                    ),
+                    //Product Details bar
+                    SizedBox(height: 24.0),
+                    ProductDetailCard(drug: widget.drug),
+                    SimilarProductSlider(),
+                    SizedBox(height: 30.0),
                   ],
                 ),
-                Text(
-                  format.currencySymbol +
-                      widget.drug.retailPricePerPack.toStringAsFixed(2),
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-                ),
-              ],
-            ),
-            //Product Details bar
-            SizedBox(height: 24.0),
-            ProductDetailCard(drug: widget.drug),
-            SimilarProductSlider(),
-            ElevatedLongBarButton(
-              text: 'Add to Cart',
-              onPressed: () {
-                //add drug to cart.
-                for (int i = 1; i <= productCount; i++) {
-                  pharmBloc.add(AddDrugToCartEvent(widget.drug));
-                }
-                //Show confirmation sheet
-                showAddToCartBottomSheet(context, widget.drug);
-              },
-            ),
-          ],
+              ),
+              ElevatedLongBarButton(
+                text: 'Add to Cart',
+                onPressed: () {
+                  //add drug to cart.
+                  for (int i = 1; i <= productCount; i++) {
+                    pharmBloc.add(AddDrugToCartEvent(widget.drug));
+                  }
+                  //Show confirmation sheet
+                  showAddToCartBottomSheet(context, widget.drug)
+                      .then((value) => pharmBloc.add(GetDrugsFromCartEvent()));
+                },
+              ),
+            ],
+          ),
         ),
       ),
       //,
