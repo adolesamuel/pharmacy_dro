@@ -93,6 +93,7 @@ class _CartPageState extends State<CartPage> {
                   if (state.cartDrugs.isEmpty) {
                     return EmptyCart();
                   }
+                  //Testing out a different combined listview
                   return Expanded(
                     child: ListView.separated(
                         shrinkWrap: true,

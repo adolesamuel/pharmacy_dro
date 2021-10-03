@@ -87,7 +87,11 @@ class CartItem extends StatelessWidget {
               ),
               TextButton.icon(
                   onPressed: clickRemove,
-                  icon: Icon(Icons.delete),
+                  icon: Image.asset(
+                    'assets/trash.png',
+                    height: 15,
+                    color: AppColors.dROPurple,
+                  ),
                   label: Text('Remove'))
             ],
           )
