@@ -10,12 +10,15 @@ class EmptyCart extends StatefulWidget {
 class _EmptyCartState extends State<EmptyCart> {
   @override
   Widget build(BuildContext context) {
-    return Center(
-        child: Container(
-      child: Text(
-        'Empty Cart',
-        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.5,
+      width: MediaQuery.of(context).size.width * 0.5,
+      child: Center(
+        child: Text(
+          'Empty Cart',
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        ),
       ),
-    ));
+    );
   }
 }
