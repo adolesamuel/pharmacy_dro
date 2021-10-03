@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pharmacy_dro/core/appColors.dart';
 import 'package:pharmacy_dro/pharmacy/app/bloc/pharm_bloc.dart';
 import 'package:pharmacy_dro/pharmacy/data/repository/pharmacy_repo.dart';
@@ -139,10 +138,11 @@ class _SearchAppBarState extends State<SearchAppBar> {
                   },
                   style: TextStyle(color: Colors.white),
                   decoration: InputDecoration(
-                      prefixIcon: Icon(
-                        Icons.search,
+                      prefixIcon: Image.asset(
+                        'assets/loupe.png',
                         color: Colors.white,
-                        size: 28,
+                        filterQuality: FilterQuality.high,
+                        scale: 20,
                       ),
                       hintText: 'Search',
                       hintMaxLines: 1,
