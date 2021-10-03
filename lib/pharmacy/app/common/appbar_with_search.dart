@@ -24,7 +24,7 @@ class SearchAppBar extends StatefulWidget implements PreferredSizeWidget {
     this.hasTruck = false,
     this.cartHasItem = true,
     this.title = const Text(
-      'Pharmarcy',
+      'Pharmacy',
       style: TextStyle(fontWeight: FontWeight.bold),
     ),
     this.hasCart = true,
