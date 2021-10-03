@@ -172,66 +172,48 @@ class _PharmacyPageState extends State<PharmacyPage> {
                             ),
                           ),
                           if (state is GotDrugsState)
-                            SingleChildScrollView(
-                              child: GridView.builder(
-                                  //padding: EdgeInsets.symmetric(vertical: 10.0),
-                                  shrinkWrap: true,
-                                  primary: false,
-                                  itemCount: drugs.length,
-                                  gridDelegate:
-                                      SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
-                                    mainAxisSpacing: 10.0,
-                                    childAspectRatio: (itemWidth / itemHeight),
-                                    crossAxisSpacing: 10.0,
-                                  ),
-                                  itemBuilder: (context, index) {
-                                    return DrugListItem(
-                                      drug: drugs[index],
-                                      onPressed: () {
-                                        Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        SingleDrugPage(
-                                                            drug:
-                                                                drugs[index])))
-                                            .then((value) =>
-                                                pharmBloc.add(GetDrugsEvent()));
-                                      },
-                                    );
-                                  }),
+                            Wrap(
+                              direction: Axis.horizontal,
+                              spacing: 20.0,
+                              runSpacing: 20.0,
+                              children: List.generate(
+                                  drugs.length,
+                                  (index) => DrugListItem(
+                                        drug: drugs[index],
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      SingleDrugPage(
+                                                          drug: drugs[
+                                                              index]))).then(
+                                              (value) => pharmBloc
+                                                  .add(GetDrugsEvent()));
+                                        },
+                                      )),
                             ),
                           if (state is GotDrugsFromCartState)
-                            SingleChildScrollView(
-                              child: GridView.builder(
-                                  //padding: EdgeInsets.symmetric(vertical: 10.0),
-                                  shrinkWrap: true,
-                                  primary: false,
-                                  itemCount: drugs.length,
-                                  gridDelegate:
-                                      SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
-                                    mainAxisSpacing: 10.0,
-                                    childAspectRatio: (itemWidth / itemHeight),
-                                    crossAxisSpacing: 10.0,
-                                  ),
-                                  itemBuilder: (context, index) {
-                                    return DrugListItem(
-                                      drug: drugs[index],
-                                      onPressed: () {
-                                        Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        SingleDrugPage(
-                                                            drug:
-                                                                drugs[index])))
-                                            .then((value) =>
-                                                pharmBloc.add(GetDrugsEvent()));
-                                      },
-                                    );
-                                  }),
+                            Wrap(
+                              direction: Axis.horizontal,
+                              spacing: 20.0,
+                              runSpacing: 20.0,
+                              children: List.generate(
+                                  drugs.length,
+                                  (index) => DrugListItem(
+                                        drug: drugs[index],
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      SingleDrugPage(
+                                                          drug: drugs[
+                                                              index]))).then(
+                                              (value) => pharmBloc
+                                                  .add(GetDrugsEvent()));
+                                        },
+                                      )),
                             ),
                         ],
                       ),
