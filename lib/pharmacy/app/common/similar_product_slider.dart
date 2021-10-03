@@ -4,9 +4,6 @@ import 'package:pharmacy_dro/pharmacy/app/bloc/pharm_bloc.dart';
 import 'package:pharmacy_dro/pharmacy/app/common/drug_list_item.dart';
 import 'package:pharmacy_dro/pharmacy/app/pages/single_drug_page.dart';
 import 'package:pharmacy_dro/pharmacy/data/models/drug_model.dart';
-import 'package:pharmacy_dro/pharmacy/data/repository/pharmacy_repo.dart';
-import 'package:pharmacy_dro/pharmacy/data/sources/local_source.dart';
-import 'package:pharmacy_dro/pharmacy/data/sources/remote_source.dart';
 
 class SimilarProductSlider extends StatefulWidget {
   const SimilarProductSlider({Key? key}) : super(key: key);

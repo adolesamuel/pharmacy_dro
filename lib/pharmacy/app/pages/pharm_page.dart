@@ -41,9 +41,6 @@ class _PharmacyPageState extends State<PharmacyPage> {
   int selectedIndex = 2;
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    final double itemHeight = 2.3;
-    final double itemWidth = 2;
     return Scaffold(
       appBar: SearchAppBar(
         onChanged: (value) {

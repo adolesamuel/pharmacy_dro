@@ -49,7 +49,6 @@ class _CartPageState extends State<CartPage> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     var format =
         NumberFormat.simpleCurrency(locale: Platform.localeName, name: 'NGN');
 

@@ -104,6 +104,7 @@ class _SingleDrugPageState extends State<SingleDrugPage> {
   );
 
   int cartLength = 0;
+  bool tapped = false;
 
   @override
   Widget build(BuildContext context) {
@@ -194,11 +195,13 @@ class _SingleDrugPageState extends State<SingleDrugPage> {
                           ),
                           IconButton(
                               onPressed: () {
-                                //TODO:
-                                //Switch favourite to filled stuff and unfill
+                                tapped = !tapped;
+                                setState(() {});
                               },
                               icon: Icon(
-                                Icons.favorite_outline,
+                                tapped
+                                    ? Icons.favorite
+                                    : Icons.favorite_outline,
                                 color: AppColors.dROPurple,
                               )),
                         ]),
